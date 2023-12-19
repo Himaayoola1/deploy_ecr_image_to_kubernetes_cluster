@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: tech365
-        image: 924338258393.dkr.ecr.us-east-2.amazonaws.com/tech365image
+        image: 543327957495.dkr.ecr.us-east-1.amazonaws.com/haishat_image
         imagePullPolicy: Always
         ports:
         - containerPort: 8080
