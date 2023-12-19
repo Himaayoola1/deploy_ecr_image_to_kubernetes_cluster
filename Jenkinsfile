@@ -4,30 +4,26 @@ pipeline {
         maven 'Maven_3_5_2'  
     }
    stages{
-
-    // sonar analysis
-
     stage('CompileandRunSonarAnalysis') {
             steps {	
-		sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=tech365app -Dsonar.organization=tech365app -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=26744a8c3cb27f934e110753eb99af5070e61c7e'
+		sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=haishat -Dsonar.organization=haishat -Dsonar.host.url=https://sonarcloud.io -Dsonar.login=6ecc2d086da15d08fdc9f45078ebf3d5eebbcf49'
 			}
     }
 
-// snyk analisys
-	stage('RunSCAAnalysisUsingSnyk') {
-            steps {		
-				withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-					sh 'mvn snyk:test -fn'
-				}
-			}
-    }	
+// 	stage('RunSCAAnalysisUsingSnyk') {
+//             steps {		
+// 				withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
+// 					sh 'mvn snyk:test -fn'
+// 				}
+// 			}
+//     }	
 
 // building docker image
-	stage('Build') { 
+stage('Build') { 
             steps { 
                withDockerRegistry([credentialsId: "dockerlogin", url: ""]) {
                  script{
-                 app =  docker.build("tech365image")
+                 app =  docker.build("haishat_image")
                  }
                }
             }
@@ -36,12 +32,16 @@ pipeline {
 	stage('Push') {
             steps {
                 script{
-                    docker.withRegistry('https://924338258393.dkr.ecr.us-east-2.amazonaws.com', 'ecr:us-east-2:aws-credentials') {
+			
+                    docker.withRegistry("https://543327957495.dkr.ecr.us-east-1.amazonaws.com", "ecr:us-east-1:aws-credentials") 
+			{
                     app.push("latest")
                     }
                 }
             }
     	}
+
+
 
     // deploy to kubernetes cluster
 
