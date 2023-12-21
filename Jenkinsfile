@@ -10,18 +10,18 @@ pipeline {
 			}
     }
 
-// 	stage('RunSCAAnalysisUsingSnyk') {
-//             steps {		
-// 				withCredentials([string(credentialsId: 'SNYK_TOKEN', variable: 'SNYK_TOKEN')]) {
-// 					sh 'mvn snyk:test -fn'
-// 				}
-// 			}
-//     }	
+	stage('RunSCAAnalysisUsingSnyk') {
+            steps {		
+				withCredentials([string(credentialsId: 'Synk', variable: 'Synk')]) {
+					sh 'mvn snyk:test -fn'
+				}
+			}
+    }	
 
 // building docker image
 stage('Build') { 
             steps { 
-               withDockerRegistry([credentialsId: "dockerlogin", url: ""]) {
+               withDockerRegistry([credentialsId: "docker-login", url: ""]) {
                  script{
                  app =  docker.build("haishat_image")
                  }
